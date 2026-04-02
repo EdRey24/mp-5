@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {usePathname} from "next/navigation";
 
 const StyledForm = styled.form`
     margin-bottom: 1vw;
@@ -10,6 +11,8 @@ const UrlDiv = styled.div`
 
 const UrlInput = styled.input`
     width: 100%;
+    border-radius: 0.2vw;
+    border: 1px solid #e5e7eb;
 `;
 
 const AliasDiv = styled.div`
@@ -24,6 +27,8 @@ const CustomAlias = styled.div`
 const AliasInput = styled.input`
     margin-left: 0.5vw;
     text-align: center;
+    border-radius: 0.2vw;
+    border: 1px solid #e5e7eb;
 `;
 
 const ShortenButton = styled.button`
@@ -50,7 +55,7 @@ export default function ShortenForm(){
                 <AliasDiv>
                     <label htmlFor="alias">Custom Alias</label>
                     <CustomAlias>
-                        <p>vercel url/</p>
+                        <p>{usePathname()}</p>
                         <AliasInput placeholder="your-custom-alias" required name="alias"/>
                     </CustomAlias>
                 </AliasDiv>
