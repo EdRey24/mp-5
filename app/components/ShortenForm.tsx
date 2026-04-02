@@ -1,5 +1,7 @@
+"use client"
+
 import styled from "styled-components";
-import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
 
 const StyledForm = styled.form`
     margin-bottom: 1vw;
@@ -42,6 +44,12 @@ const ShortenButton = styled.button`
 
 
 export default function ShortenForm(){
+    const [baseUrl, setBaseUrl] = useState<string>('');
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setBaseUrl(window.location.origin);
+    }, []);
 
     return (
         <>
@@ -55,7 +63,7 @@ export default function ShortenForm(){
                 <AliasDiv>
                     <label htmlFor="alias">Custom Alias</label>
                     <CustomAlias>
-                        <p>{window.location.href}</p>
+                        <p>{baseUrl}/</p>
                         <AliasInput placeholder="your-custom-alias" required name="alias"/>
                     </CustomAlias>
                 </AliasDiv>
