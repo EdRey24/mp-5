@@ -55,7 +55,7 @@ export default function ShortenForm(){
                 <AliasDiv>
                     <label htmlFor="alias">Custom Alias</label>
                     <CustomAlias>
-                        <p>{usePathname()}</p>
+                        <p>{window.location.href}</p>
                         <AliasInput placeholder="your-custom-alias" required name="alias"/>
                     </CustomAlias>
                 </AliasDiv>
