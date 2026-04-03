@@ -2,6 +2,9 @@
 
 import styled from "styled-components";
 import {useEffect, useState} from "react";
+import FinishedUrl from "@/app/components/FinishedUrl";
+import createNewAlias from "@/lib/createNewAlias";
+import aliasAvailable from "@/lib/aliasAvailable";
 
 const StyledForm = styled.form`
     margin-bottom: 1vw;
@@ -44,31 +47,96 @@ const ShortenButton = styled.button`
 
 
 export default function ShortenForm(){
-    const [baseUrl, setBaseUrl] = useState<string>('');
+    const [baseUrl, setBaseUrl] = useState<string>("");
+    const [errorUrl, setErrorUrl] = useState<string>("");
+    const [errorAlias, setErrorAlias] = useState<string>("");
+    const [shortenedUrl, setShortenedUrl] = useState<string | null>(null);
+    const [urlInput, setUrlInput] = useState<string>("");
+    const [aliasInput, setAliasInput] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setBaseUrl(window.location.origin);
     }, []);
 
+    function checkURL(url: string){
+        if(URL.canParse(url) || url === ""){
+            setErrorUrl("");
+        }else{
+            setErrorUrl("This is an invalid URL");
+        }
+    }
+
+    async function checkAlias(alias: string): Promise<boolean> {
+        if(await aliasAvailable(alias)){
+            setErrorAlias("");
+            return true;
+        }else{
+            setErrorAlias("This alias is not available");
+            return false;
+        }
+    }
+
+    async function handleSubmit(){
+        setLoading(true);
+
+        try {
+            if(!await checkAlias(aliasInput)) return;
+
+            const result = await createNewAlias(aliasInput, urlInput);
+
+            if(result == null) {
+                throw new Error("Failed to shorten URL");
+            }
+            const fullShortUrl = `${baseUrl}/${aliasInput}`;
+            setShortenedUrl(fullShortUrl);
+        } catch (error) {
+            console.error("Error creating short Url:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <>
-            <StyledForm>
+            <StyledForm
+                action={handleSubmit}
+            >
                 <UrlDiv>
                     <label htmlFor="url">URL</label>
                     <div>
-                        <UrlInput placeholder="https://example.com/very/long/url" required name="url"/>
+                        <UrlInput
+                            type="text"
+                            placeholder="https://example.com/very/long/url"
+                            value={urlInput}
+                            onChange={(e) => {
+                                setUrlInput(e.target.value);
+                                checkURL(e.target.value);
+                            }}
+                            required
+                            name="url"/>
                     </div>
                 </UrlDiv>
                 <AliasDiv>
                     <label htmlFor="alias">Custom Alias</label>
                     <CustomAlias>
                         <p>{baseUrl}/</p>
-                        <AliasInput placeholder="your-custom-alias" required name="alias"/>
+                        <AliasInput
+                            placeholder="your-custom-alias"
+                            value={aliasInput}
+                            onChange={(e) => {
+                                setAliasInput(e.target.value)
+                                if(errorAlias) setErrorAlias("");
+                            }}
+                            required
+                            name="alias"/>
                     </CustomAlias>
                 </AliasDiv>
-                <ShortenButton type="submit">Shorten</ShortenButton>
+                <ShortenButton type="submit" disabled={errorUrl.length > 0 || errorAlias.length > 0}>{loading ? `Shortening...` : `Shorten`}</ShortenButton>
+                {errorUrl && <p>{errorUrl}</p>}
+                {errorAlias && <p>{errorAlias}</p>}
             </StyledForm>
+            {shortenedUrl && <FinishedUrl shortenedUrl={shortenedUrl}/>}
         </>
     );
 }
