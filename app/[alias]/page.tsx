@@ -1,19 +1,25 @@
 import {redirect} from "next/navigation";
-import clientPromise from "@/lib/mongodb";
+import aliasAvailable from "@/lib/aliasAvailable";
+import getUrlByAlias from "@/lib/getUrlByAlias";
 
 export default async function AliasPage({params}: {params: Promise<{ alias: string }> }) {
     const { alias } = await params;
 
-    const db = clientPromise.db("aliases");
-    const aliasCollection = db.collection("aliases");
-    const redirectUrl = await aliasCollection.findOne(
-        { alias },
-        { projection: { url: 1, _id: 0 } }
-    );
-
-    if (!redirectUrl?.url) {
+    if (await aliasAvailable(alias)) {
         redirect("/");
     }
 
-    redirect(redirectUrl.url);
+    let url: string | null = null;
+
+    try{
+        url = await getUrlByAlias(alias);
+        if(url === null){
+            return redirect(`/error`);
+        }
+    } catch(error){
+        console.error("Unexpected error:", error);
+        return redirect(`/error`);
+    }
+
+    redirect(url);
 }
