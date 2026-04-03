@@ -86,7 +86,7 @@ export default function ShortenForm(){
             const result = await createNewAlias(aliasInput, urlInput);
 
             if(result == null) {
-                throw new Error("Failed to shorten URL");
+                console.error("Failed to shorten URL");
             }
             const fullShortUrl = `${baseUrl}/${aliasInput}`;
             setShortenedUrl(fullShortUrl);
@@ -95,7 +95,7 @@ export default function ShortenForm(){
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
         <>
