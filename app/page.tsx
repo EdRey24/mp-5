@@ -1,8 +1,6 @@
 "use client";
 
 import styled, {createGlobalStyle} from "styled-components";
-import {useState} from "react";
-import FinishedUrl from "@/app/components/FinishedUrl";
 import ShortenCard from "@/app/components/ShortenCard";
 
 const GlobalStyle = createGlobalStyle`
@@ -28,7 +26,6 @@ const StyledDiv = styled.div`
 
 
 export default function Home() {
-  const[url, setUrl] = useState("");
 
   return (
       <>
@@ -38,7 +35,6 @@ export default function Home() {
               <h1>URL Shortener</h1>
               <p>Shorten your long URLs into compact, shareable links</p>
               <ShortenCard/>
-              <FinishedUrl/>
           </StyledDiv>
       </>
 
