@@ -7,20 +7,32 @@ const GlobalStyle = createGlobalStyle`
     * {
         margin: 0;
         box-sizing: border-box;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 `;
 
 const Title = styled.h1`
     margin-bottom: 0.5vw;
     font-weight: 400;
-    font-size: 2vw;
+    font-size: calc(2px + 3vw);
 `;
 
 const StyledDiv = styled.div`
     display: flex;
+    height: 100vh;
     flex-direction: column;
     align-items: center;
-    background-color: #e9fdf3;
+    background-color: #f3e9fd;
+    padding: 4vw;
+`;
+
+const StyledHeading = styled.h1`
+    font-size: calc(2px + 3vw);
+`;
+
+const StyledP = styled.p`
+    color: #737373;
+    font-size: calc(2px + 1vw);
 `;
 
 
@@ -32,8 +44,8 @@ export default function Home() {
           <GlobalStyle/>
           <Title>CS391 URL Shortener</Title>
           <StyledDiv>
-              <h1>URL Shortener</h1>
-              <p>Shorten your long URLs into compact, shareable links</p>
+              <StyledHeading>URL Shortener</StyledHeading>
+              <StyledP>Shorten your long URLs into compact, shareable links</StyledP>
               <ShortenCard/>
           </StyledDiv>
       </>

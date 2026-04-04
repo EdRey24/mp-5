@@ -8,6 +8,10 @@ import aliasAvailable from "@/lib/aliasAvailable";
 
 const StyledForm = styled.form`
     margin-bottom: 1vw;
+    
+    label {
+        font-size: calc(2px + 1.3vw);
+    }
 `;
 
 const UrlDiv = styled.div`
@@ -17,7 +21,14 @@ const UrlDiv = styled.div`
 const UrlInput = styled.input`
     width: 100%;
     border-radius: 0.2vw;
-    border: 1px solid #e5e7eb;
+    border: 2px solid #ebedf0;
+    font-size: calc(2px + 1.3vw);
+    padding: 0.6vw;
+    color: #171717;
+    
+    ::placeholder {
+        color: #7a7a7a
+    }
 `;
 
 const AliasDiv = styled.div`
@@ -31,18 +42,38 @@ const CustomAlias = styled.div`
 
 const AliasInput = styled.input`
     margin-left: 0.5vw;
-    text-align: center;
     border-radius: 0.2vw;
-    border: 1px solid #e5e7eb;
+    border: 2px solid #ebedf0;
+    font-size: calc(2px + 1.3vw);
+    padding: 0.6vw;
+    color: #171717;
+
+    ::placeholder {
+    color: #7a7a7a
+    }   
+`;
+
+const BaseUrl = styled.p`
+    color: #7a7a7a;
+    font-size: calc(2px + 1.3vw);
 `;
 
 const ShortenButton = styled.button`
     width: 100%;
-    background-color: #10b981;
+    background-color: #4e10b9;
     color: white;
-    border-radius: 0.3vw;
+    border-radius: 0.6vw;
     border: none;
     padding: 0.5vw;
+    font-size: calc(2px + 1.5vw);
+    cursor: pointer;
+`;
+
+const ErrorText = styled.p`
+    color: #dc2626;
+    text-align: center;
+    font-size: calc(2px + 1.5vw);
+    margin: 1vw;
 `;
 
 
@@ -63,7 +94,7 @@ export default function ShortenForm(){
         if(URL.canParse(url) || url === ""){
             setErrorUrl("");
         }else{
-            setErrorUrl("This is an invalid URL");
+            setErrorUrl("Invalid URL: Could not verify URL. Please try again.");
         }
     }
 
@@ -72,7 +103,7 @@ export default function ShortenForm(){
             setErrorAlias("");
             return true;
         }else{
-            setErrorAlias("This alias is not available");
+            setErrorAlias("Invalid alias: This alias already exists");
             return false;
         }
     }
@@ -120,7 +151,7 @@ export default function ShortenForm(){
                 <AliasDiv>
                     <label htmlFor="alias">Custom Alias</label>
                     <CustomAlias>
-                        <p>{baseUrl}/</p>
+                        <BaseUrl>{baseUrl}/</BaseUrl>
                         <AliasInput
                             placeholder="your-custom-alias"
                             value={aliasInput}
@@ -133,8 +164,8 @@ export default function ShortenForm(){
                     </CustomAlias>
                 </AliasDiv>
                 <ShortenButton type="submit" disabled={errorUrl.length > 0 || errorAlias.length > 0}>{loading ? `Shortening...` : `Shorten`}</ShortenButton>
-                {errorUrl && <p>{errorUrl}</p>}
-                {errorAlias && <p>{errorAlias}</p>}
+                {errorUrl && <ErrorText>{errorUrl}</ErrorText>}
+                {errorAlias && <ErrorText>{errorAlias}</ErrorText>}
             </StyledForm>
             {shortenedUrl && <FinishedUrl shortenedUrl={shortenedUrl}/>}
         </>
