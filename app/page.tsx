@@ -9,20 +9,23 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
+    
+    body{
+        background-color: #f3e9fd;
+    }
 `;
 
 const Title = styled.h1`
     margin-bottom: 0.5vw;
     font-weight: 400;
     font-size: calc(2px + 3vw);
+    background-color: #ffffff;
 `;
 
 const StyledDiv = styled.div`
     display: flex;
-    height: 100vh;
     flex-direction: column;
     align-items: center;
-    background-color: #f3e9fd;
     padding: 4vw;
 `;
 
