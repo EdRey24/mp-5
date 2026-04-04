@@ -10,9 +10,9 @@ const StyledOutput = styled.div`
 `;
 
 const StyledText = styled.p`
-    color: gray;
+    color: #7a7a7a;
     margin-bottom: 1vw;
-    font-size: calc(2px + 2vw);
+    font-size: calc(2px + 1vw);
 `;
 
 const CopyLinkDiv = styled.div`
@@ -25,14 +25,14 @@ const StyledLink = styled.a`
     text-decoration: none;
     color: #171717;
     font-weight: bold;
-    font-size: calc(2px + 2vw);
+    font-size: calc(2px + 1.5vw);
 `;
 
 const CopyButton = styled.button`
     background: none;
     border: none;
     margin-left: auto;
-    font-size: calc(2px + 2vw);
+    font-size: calc(2px + 1.5vw);
     cursor: pointer;
 `;
 
